@@ -28,4 +28,4 @@ jobs:
           SMTP_SERVER: ${{ secrets.SMTP_SERVER }}
           SMTP_PORT: ${{ secrets.SMTP_PORT }}
           RECIPIENTS: ${{ secrets.RECIPIENTS }}
-        run: python spreadsheetchecker/margotchecker.py
+        run: python margotchecker.py
