@@ -34,7 +34,7 @@ def save_last_stats(stats):
     print("last_stats.json updated")
 
 def send_email_update(stats, diffs):
-    plain_body = f""" Margots Daily Spreadsheet stats:
+    plain_body = f"""Margot's Daily Spreadsheet Stats:
 
 Year:  {stats.get('year')}  ({diffs['year']:+})
 Month: {stats.get('month')}  ({diffs['month']:+})
@@ -50,7 +50,7 @@ Week:  {stats.get('week')}  ({diffs['week']:+})
         <p><b>Week:</b> {stats.get('week')} <span style="color: #27ae60;">({diffs['week']:+})</span></p>
         <hr style="margin:20px 0;">
         <p style="font-size: 0.9em; color: #777;">
-          This update was sent automatically by Margots Spreadsheet Tracker
+          This update was sent automatically by Margot's Spreadsheet Tracker.
         </p>
       </body>
     </html>
@@ -58,7 +58,7 @@ Week:  {stats.get('week')}  ({diffs['week']:+})
 
     msg = MIMEMultipart("alternative")
     msg["Subject"] = "Margot did a new Spreadsheet!"
-    msg["From"] = EMAIL
+    msg["From"] = EMAIL_USER
     msg["To"] = ", ".join(RECIPIENTS)
 
     msg.attach(MIMEText(plain_body, "plain"))
@@ -66,12 +66,12 @@ Week:  {stats.get('week')}  ({diffs['week']:+})
 
     with smtplib.SMTP(SMTP_SERVER, SMTP_PORT) as server:
         server.starttls()
-        server.login(EMAIL, PASSWORD)
+        server.login(EMAIL_USER, EMAIL_PASS)
         server.send_message(msg)
 
 def daily_check():
-    current = get_stats()
-    last = load_last()
+    current = fetch_stats()
+    last = load_last_stats()
 
     if last:
         diffs = {
@@ -83,10 +83,14 @@ def daily_check():
         diffs = {"year": 0, "month": 0, "week": 0}
 
     if not last or current != last:
-        print("Margot did some spreadsheets! Sending Update letter")
+        print("Margot did some spreadsheets! Sending update email…")
         send_email_update(current, diffs)
-        save_current(current)
+        save_last_stats(current)
     else:
-        print("Margot hasnt done any spreadsheets today, check back tomarrow.")
+        print("No new spreadsheets today.")
+
+def main():
+    daily_check()
+
 if __name__ == "__main__":
     main()
