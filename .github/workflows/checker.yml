@@ -1,5 +1,8 @@
 name: Daily Margot Spreadsheet Checker
 
+permissions:
+  contents: write
+
 on:
   schedule:
     - cron: "0 13 * * *"   # runs daily at 6am PST
