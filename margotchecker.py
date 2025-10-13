@@ -8,17 +8,17 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
+EMAIL_USER = os.getenv("EMAIL_USER")
+EMAIL_PASS = os.getenv("EMAIL_PASS")
+SMTP_SERVER = os.getenv("SMTP_SERVER", "smtp.gmail.com")
+SMTP_PORT = int(os.getenv("SMTP_PORT", 465))
+RECIPIENTS = os.getenv("RECIPIENTS", "").split(",")
+
+# Debug prints for CI visibility (safe)
 print(f"SMTP_SERVER={SMTP_SERVER}, SMTP_PORT={SMTP_PORT}")
 print(f"EMAIL_USER={EMAIL_USER}")
 if not EMAIL_USER or not EMAIL_PASS:
     raise SystemExit("Missing EMAIL_USER or EMAIL_PASS in environment!")
-
-
-EMAIL_USER = os.getenv("EMAIL_USER")
-EMAIL_PASS = os.getenv("EMAIL_PASS")
-SMTP_SERVER = os.getenv("SMTP_SERVER", "smtp.gmail.com")
-SMTP_PORT = int(os.getenv("SMTP_PORT", 587))
-RECIPIENTS = os.getenv("RECIPIENTS", "").split(",")
 
 STATS_URL = "https://script.google.com/macros/s/AKfycbyIBV7uMsR2rIMpQffdSIU3y7Ddb6zwIEesd3YUYUQfE_1srS_20dEC-6QTWxeglFdi/exec"
 LAST_STATS_FILE = "last_stats.json"
