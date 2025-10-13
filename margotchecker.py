@@ -7,14 +7,12 @@ from email.mime.multipart import MIMEMultipart
 from dotenv import load_dotenv
 
 load_dotenv()
-
 EMAIL_USER = os.getenv("EMAIL_USER")
 EMAIL_PASS = os.getenv("EMAIL_PASS")
 SMTP_SERVER = os.getenv("SMTP_SERVER", "smtp.gmail.com")
 SMTP_PORT = int(os.getenv("SMTP_PORT", 465))
 RECIPIENTS = os.getenv("RECIPIENTS", "").split(",")
 
-# Debug prints for CI visibility (safe)
 print(f"SMTP_SERVER={SMTP_SERVER}, SMTP_PORT={SMTP_PORT}")
 print(f"EMAIL_USER={EMAIL_USER}")
 if not EMAIL_USER or not EMAIL_PASS:
@@ -22,7 +20,6 @@ if not EMAIL_USER or not EMAIL_PASS:
 
 STATS_URL = "https://script.google.com/macros/s/AKfycbyIBV7uMsR2rIMpQffdSIU3y7Ddb6zwIEesd3YUYUQfE_1srS_20dEC-6QTWxeglFdi/exec"
 LAST_STATS_FILE = "last_stats.json"
-
 def fetch_stats():
     resp = requests.get(STATS_URL, timeout=10)
     resp.raise_for_status()
@@ -70,7 +67,7 @@ Week:  {stats.get('week')}  ({diffs['week']:+})
     msg.attach(MIMEText(plain_body, "plain"))
     msg.attach(MIMEText(html_body, "html"))
 
-    with smtplib.SMTP_SSL(SMTP_SERVER, 465) as server:
+    with smtplib.SMTP_SSL(SMTP_SERVER, SMTP_PORT) as server:
         server.login(EMAIL_USER, EMAIL_PASS)
         server.send_message(msg)
 
