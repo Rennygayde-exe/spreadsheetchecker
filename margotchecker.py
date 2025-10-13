@@ -64,8 +64,7 @@ Week:  {stats.get('week')}  ({diffs['week']:+})
     msg.attach(MIMEText(plain_body, "plain"))
     msg.attach(MIMEText(html_body, "html"))
 
-    with smtplib.SMTP(SMTP_SERVER, SMTP_PORT) as server:
-        server.starttls()
+    with smtplib.SMTP_SSL(SMTP_SERVER, 465) as server:
         server.login(EMAIL_USER, EMAIL_PASS)
         server.send_message(msg)
 
