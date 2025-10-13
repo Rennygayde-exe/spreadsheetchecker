@@ -8,6 +8,12 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
+print(f"SMTP_SERVER={SMTP_SERVER}, SMTP_PORT={SMTP_PORT}")
+print(f"EMAIL_USER={EMAIL_USER}")
+if not EMAIL_USER or not EMAIL_PASS:
+    raise SystemExit("Missing EMAIL_USER or EMAIL_PASS in environment!")
+
+
 EMAIL_USER = os.getenv("EMAIL_USER")
 EMAIL_PASS = os.getenv("EMAIL_PASS")
 SMTP_SERVER = os.getenv("SMTP_SERVER", "smtp.gmail.com")
